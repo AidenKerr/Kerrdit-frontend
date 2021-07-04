@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import Login from './pages/Login.js'
+import Login from './pages/Login.js';
+import Signup from './pages/Signup.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -38,6 +39,9 @@ function App() {
               <Link to="/login">Log In</Link>
             </li>
             <li>
+              <Link to="/signup">Sign Up</Link>
+            </li>
+            <li>
               <Link to="/users">Users</Link>
             </li>
             <li>
@@ -51,6 +55,9 @@ function App() {
         <Switch>
           <Route path="/login">
             <Login setUser={setUser}/>
+          </Route>
+          <Route path="/signup">
+            <Signup/>
           </Route>
           <Route path="/users">
             <Users />
