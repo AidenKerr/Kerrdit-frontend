@@ -2,11 +2,20 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js'
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton
+} from '@material-ui/core'
+import { AccountCircle, Mail, Reddit } from '@material-ui/icons';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  Link as RouterLink,
 } from "react-router-dom";
 
 function App() {
@@ -26,26 +35,53 @@ function App() {
     localStorage.clear();
   }
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    title: {
+      flexGrow: 1,
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
     <Router>
-      <div>
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Toolbar>
+            <IconButton color='inherit'><Reddit fontSize='large'/></IconButton>
+            <Typography variant='h6' className={classes.title}>Kerrdit</Typography>
+            {user ?
+              <>
+                <Typography>{user} (karma) </Typography>
+                <IconButton color='inherit'><Mail /></IconButton>
+                <IconButton color='inherit' component={RouterLink} to={'/u/'+user}><AccountCircle/></IconButton>
+                <Button color='inherit' component={RouterLink} to='/' onClick={handleLogOut}>Sign Out</Button>
+              </>
+              :
+              <Button color='inherit' component={RouterLink} to='/login'>Log In</Button>
+            }
+          </Toolbar>
+        </AppBar>
         <p>{user ? `Hello, ${user}` : '' }</p>
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <RouterLink to='/'>Home</RouterLink>
             </li>
             <li>
-              <Link to="/login">Log In</Link>
+              <RouterLink to='/login'>Log In</RouterLink>
             </li>
             <li>
-              <Link to="/signup">Sign Up</Link>
+              <RouterLink to='/signup'>Sign Up</RouterLink>
             </li>
             <li>
-              <Link to="/users">Users</Link>
+              <RouterLink to='/users'>Users</RouterLink>
             </li>
             <li>
-              <Link to='/' onClick={handleLogOut}>Log Out</Link>
+              <RouterLink to='/' onClick={handleLogOut}>Log Out</RouterLink>
             </li>
           </ul>
         </nav>
@@ -53,16 +89,16 @@ function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/login">
+          <Route path='/login'>
             <Login setUser={setUser}/>
           </Route>
-          <Route path="/signup">
+          <Route path='/signup'>
             <Signup/>
           </Route>
-          <Route path="/users">
+          <Route path='/users'>
             <Users />
           </Route>
-          <Route path="/">
+          <Route path='/'>
             <Home />
           </Route>
         </Switch>
