@@ -1,7 +1,8 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import Login from './pages/Login.js';
-import Signup from './pages/Signup.js'
+import Signup from './pages/Signup.js';
+import User from './pages/User.js';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -51,7 +52,7 @@ function App() {
       <div className={classes.root}>
         <AppBar position='static'>
           <Toolbar>
-            <IconButton color='inherit'><Reddit fontSize='large'/></IconButton>
+            <IconButton color='inherit' component={RouterLink} to={'/'}><Reddit fontSize='large'/></IconButton>
             <Typography variant='h6' className={classes.title}>Kerrdit</Typography>
             {user ?
               <>
@@ -65,26 +66,6 @@ function App() {
             }
           </Toolbar>
         </AppBar>
-        <p>{user ? `Hello, ${user}` : '' }</p>
-        <nav>
-          <ul>
-            <li>
-              <RouterLink to='/'>Home</RouterLink>
-            </li>
-            <li>
-              <RouterLink to='/login'>Log In</RouterLink>
-            </li>
-            <li>
-              <RouterLink to='/signup'>Sign Up</RouterLink>
-            </li>
-            <li>
-              <RouterLink to='/users'>Users</RouterLink>
-            </li>
-            <li>
-              <RouterLink to='/' onClick={handleLogOut}>Log Out</RouterLink>
-            </li>
-          </ul>
-        </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -95,8 +76,8 @@ function App() {
           <Route path='/signup'>
             <Signup/>
           </Route>
-          <Route path='/users'>
-            <Users />
+          <Route path='/u/:username'>
+            <User />
           </Route>
           <Route path='/'>
             <Home />
@@ -111,8 +92,5 @@ function Home() {
   return <h2>Home</h2>;
 }
 
-function Users() {
-  return <h2>Users</h2>;
-}
 
 export default App;

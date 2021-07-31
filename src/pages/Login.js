@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Axios from 'axios';
-import { useHistory } from "react-router";
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function Login(props) {
 
@@ -31,6 +32,7 @@ function Login(props) {
         // store in localStorage
         localStorage.setItem('user', response.data.result);
         
+        // redirect
         history.push('/');
     }
 
@@ -43,6 +45,8 @@ function Login(props) {
                 <button onClick={handleSubmit}>Submit</button>
                 <label className="error">{errorMsg}</label>
             </form>
+
+            <Link to='/signup'>Sign Up</Link>
         </div>
     );
 }
