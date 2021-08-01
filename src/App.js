@@ -36,6 +36,7 @@ function App() {
     localStorage.clear();
   }
 
+  // theme argument is currently unused - that may or may not change
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
