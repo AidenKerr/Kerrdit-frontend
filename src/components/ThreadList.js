@@ -1,5 +1,6 @@
 import { Card, CardHeader, Box, makeStyles, IconButton, Grid, Typography, CardActionArea } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 const humanizeDuration = require("humanize-duration");
 
 function ThreadList(props) {
@@ -35,10 +36,12 @@ function ThreadList(props) {
                     <Typography className={classes.score}>{thread.points}</Typography>
                     <IconButton><ArrowDownward/></IconButton>
                 </Box>
-                <CardActionArea>
+                <CardActionArea component={Link} to={`/r/${thread.subkerrdit}/comments/${thread.id}`}>
                     <CardHeader
                         title={thread.subject}
-                        subheader={`Posted ${
+                        subheader={`/r/${thread.subkerrdit} |
+                            ${thread.username} |
+                            Posted ${
                             humanizeDuration(
                                 thread.unix_time_ms - new Date().getTime(), {
                                     largest: 1
@@ -51,12 +54,10 @@ function ThreadList(props) {
         );
     })
 
-    if (threadBoxes[0]) {
-        return (
-            <Grid item xs={12} sm={8} className={classes.threadList}>
-                {threadBoxes}
-            </Grid>
-        );
-    } else return null;
+    return (
+        <Grid item xs={12} sm={8} className={classes.threadList}>
+            {threadBoxes[0] ? threadBoxes : null}
+        </Grid>
+    )
 }
 export default ThreadList

@@ -18,6 +18,9 @@ import {
   Route,
   Link as RouterLink,
 } from "react-router-dom";
+import Subkerrdit from './pages/Subkerrdit';
+import Thread from './pages/Thread';
+import SubmitThread from './pages/SubmitThread'
 
 function App() {
 
@@ -79,6 +82,15 @@ function App() {
           </Route>
           <Route path='/u/:username'>
             <User />
+          </Route>
+          <Route path='/r/:subkerrdit/comments/:id'>
+            <Thread />
+          </Route>
+          <Route path='/r/:subkerrdit/submit'>
+            <SubmitThread username={user}/>
+          </Route>
+          <Route path='/r/:subkerrdit'>
+            <Subkerrdit />
           </Route>
           <Route path='/'>
             <Home />

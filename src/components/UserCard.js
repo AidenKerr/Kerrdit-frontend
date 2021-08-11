@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Grid, makeStyles } from "@material-ui/core";
+import { Card, CardHeader, Grid, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 const humanizeDuration = require("humanize-duration");
@@ -16,11 +16,11 @@ function UserCard(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios(`http://localhost:3001/api/${props.user}/userinfo`)
+            const result = await axios(`http://localhost:3001/api/u/${props.user}/userinfo`);
             setuserInfo(result.data[0]);
         }
         fetchData();
-    });
+    }, [props.user]);
 
     return (
         <Grid item xs>
