@@ -1,13 +1,20 @@
 import { useState } from "react";
-import { Container, Card, CardHeader, CardContent, OutlinedInput, FormControl, FormLabel, Button } from "@material-ui/core";
+import { Container, Card, CardHeader, CardContent, OutlinedInput, FormControl, FormLabel, Button, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useParams, Link as RouterLink } from "react-router-dom";
+
+const useStyles = makeStyles((theme) => ({
+    submitPage: {
+        marginTop: '15px',
+    }
+}));
 
 function SubmitThread(props) {
 
     const { subkerrdit } = useParams();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const classes = useStyles();
 
     const handleSubmit = (e) => {
         console.log(props.user);
@@ -25,7 +32,7 @@ function SubmitThread(props) {
 
     return (
         <Container>
-            <Card>
+            <Card className={classes.submitPage}>
                 <CardHeader title={`Submit a new post to r/${subkerrdit}`}/>
                 <CardContent>
                     <FormControl fullWidth>
