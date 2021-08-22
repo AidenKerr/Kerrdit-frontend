@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Card, CardHeader, CardContent, OutlinedInput, FormControl, FormLabel, Button } from "@material-ui/core";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 
 function SubmitThread(props) {
 
@@ -10,12 +10,11 @@ function SubmitThread(props) {
     const [content, setContent] = useState('');
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         console.log(props.user);
         try {
             axios.post('http://localhost:3001/api/threads', {
-                sub_id: 1,
-                username: props.username,
+                sub_name: subkerrdit,
+                userID: props.userID,
                 subject: title,
                 message: content
             });
@@ -38,7 +37,7 @@ function SubmitThread(props) {
                         <OutlinedInput id='content' multiline rows='2' rowsMax='100' onChange={(e) => {setContent(e.target.value)}}></OutlinedInput>
                     </FormControl>
                     <br/>
-                    <Button size='large' variant='outlined' onClick={handleSubmit}>Submit</Button>
+                    <Button size='large' variant='outlined' component={RouterLink} to={`/r/${subkerrdit}`} onClick={handleSubmit}>Submit</Button>
                 </CardContent>
             </Card>
         </Container>

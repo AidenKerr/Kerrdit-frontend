@@ -24,22 +24,25 @@ import SubmitThread from './pages/SubmitThread'
 
 function App() {
 
-  const [user, setUser] = useState();
+  const [userInfo, setUserInfo] = useState();
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('user');
+    const loggedInUser = localStorage.getItem('username');
+    const loggedInUserID = localStorage.getItem('userID');
     if (loggedInUser) {
-      //const foundUser = JSON.parse(loggedInUser);
-      setUser(loggedInUser);
+      setUserInfo({
+        username: loggedInUser,
+        userID: loggedInUserID
+      });
     }
   }, []);
 
   const handleLogOut = () => {
-    setUser('');
+    setUserInfo(null);
     localStorage.clear();
   }
 
-  // theme argument is currently unused - that may or may not change
+  // theme argument is currently unused - that may or may not change (TODO)
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -51,18 +54,20 @@ function App() {
 
   const classes = useStyles();
 
+  const username = userInfo ? userInfo.username: '';
   return (
+
     <Router>
       <div className={classes.root}>
         <AppBar position='static'>
           <Toolbar>
             <IconButton color='inherit' component={RouterLink} to={'/'}><Reddit fontSize='large'/></IconButton>
             <Typography variant='h6' className={classes.title}>Kerrdit</Typography>
-            {user ?
+            {userInfo ?
               <>
-                <Typography>{user} (karma) </Typography>
+                <Typography>{username} (karma) </Typography>
                 <IconButton color='inherit'><Mail /></IconButton>
-                <IconButton color='inherit' component={RouterLink} to={'/u/'+user}><AccountCircle/></IconButton>
+                <IconButton color='inherit' component={RouterLink} to={'/u/'+username}><AccountCircle/></IconButton>
                 <Button color='inherit' component={RouterLink} to='/' onClick={handleLogOut}>Sign Out</Button>
               </>
               :
@@ -75,7 +80,7 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path='/login'>
-            <Login setUser={setUser}/>
+            <Login setUserInfo={setUserInfo}/>
           </Route>
           <Route path='/signup'>
             <Signup/>
@@ -87,7 +92,7 @@ function App() {
             <Thread />
           </Route>
           <Route path='/r/:subkerrdit/submit'>
-            <SubmitThread username={user}/>
+            <SubmitThread userID={userInfo ? userInfo.userID : null}/>
           </Route>
           <Route path='/r/:subkerrdit'>
             <Subkerrdit />

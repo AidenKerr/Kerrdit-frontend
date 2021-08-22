@@ -25,12 +25,12 @@ function Login(props) {
             return;
         }
         
-        
 
         // set state of user
-        props.setUser(response.data.result);
+        props.setUserInfo(response.data.result);
         // store in localStorage
-        localStorage.setItem('user', response.data.result);
+        localStorage.setItem('username', response.data.result.username);
+        localStorage.setItem('userID', response.data.result.id);
         
         // redirect
         history.push('/');
