@@ -17,7 +17,6 @@ function SubmitThread(props) {
     const classes = useStyles();
 
     const handleSubmit = (e) => {
-        console.log(props.user);
         try {
             axios.post('http://localhost:3001/api/threads', {
                 sub_name: subkerrdit,

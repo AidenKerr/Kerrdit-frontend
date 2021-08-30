@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import SubCard from "../components/SubCard";
 import ThreadsPage from "./ThreadsPage";
 
-function Subkerrdit() {
+function Subkerrdit(props) {
 
     const { subkerrdit } = useParams();
 
@@ -10,6 +10,7 @@ function Subkerrdit() {
         <ThreadsPage 
             apiRoute={`r/${subkerrdit}/threads`}
             sideCard={<SubCard subkerrdit={subkerrdit}/>}
+            userID={props.userID}
         />
     );
 }

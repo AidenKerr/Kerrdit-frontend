@@ -1,57 +1,56 @@
-import { Card, CardHeader, Box, makeStyles, IconButton, Grid, Typography, CardActionArea } from '@material-ui/core';
-import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
-const humanizeDuration = require("humanize-duration");
+import { useEffect, useState } from 'react';
+import ThreadCard from './ThreadCard';
+import { makeStyles, Grid } from '@material-ui/core';
+import axios from 'axios';
 
 function ThreadList(props) {
 
     const threads = props.threads;
 
+    const [votes, setVotes] = useState({});
     const useStyles = makeStyles({
-        postCard: {
-            display: 'flex',
-            marginBottom: '5px',
-        },
-        votingBox: {
-            display: 'flex',
-            flexDirection: 'column',
-            paddingLeft: '5px'
-        },
         threadList: {
             flexGrow: 1
         },
-        score: {
-            margin: '-10px 0 -10px 0',
-            textAlign: 'center'
-        }
     });
     const classes = useStyles();
+    
 
+    useEffect(() => {
+        const IDs = threads.map((thread) => {
+            return thread.post_id;
+        });
+        
+        const fetchData = async () => {
+            const result = await axios.get('http://localhost:3001/api/userVotes', {
+                params: {
+                    IDs: IDs,
+                    user_id: props.userID
+                }
+            });
+
+            let newVotes = {};
+            for (let i = 0; i < result.data.length; i++) {
+                newVotes[result.data[i].post_id] = result.data[i].value;
+            }
+            setVotes(newVotes);
+        }
+        fetchData();
+    }, [threads, props.userID]);
 
     const threadBoxes = threads.map((thread) => {
-        return (
-            <Card key={thread.id} className={classes.postCard}>
-                <Box className={classes.votingBox}>
-                    <IconButton><ArrowUpward/></IconButton>
-                    <Typography className={classes.score}>{thread.points}</Typography>
-                    <IconButton><ArrowDownward/></IconButton>
-                </Box>
-                <CardActionArea component={Link} to={`/r/${thread.subkerrdit}/comments/${thread.id}`}>
-                    <CardHeader
-                        title={thread.subject}
-                        subheader={`/r/${thread.subkerrdit} |
-                            ${thread.username} |
-                            Posted ${
-                            humanizeDuration(
-                                thread.unix_time_ms - new Date().getTime(), {
-                                    largest: 1
-                                }
-                            )} ago`
-                        }
-                    />
-                </CardActionArea>
-            </Card>
-        );
+        return <ThreadCard
+            key={thread.post_id}
+            post_id={thread.post_id}
+            thread_id={thread.thread_id}
+            points={thread.points}
+            subkerrdit={thread.subkerrdit}
+            username={thread.username}
+            unix_time_ms={thread.unix_time_ms}
+            subject={thread.subject}
+            initVote={votes[thread.post_id] ? votes[thread.post_id] : 0 }
+            loggedInID={props.userID}
+        />
     })
 
     return (

@@ -45,7 +45,7 @@ function ThreadsPage(props) {
                 spacing={1}
                 className={classes.userPage}
             >
-                <ThreadList threads={threads}/>
+                <ThreadList threads={threads} userID={props.userID}/>
                 {props.sideCard}
             </Grid>
         </Container>
