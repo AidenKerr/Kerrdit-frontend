@@ -35,7 +35,7 @@ function ThreadsPage(props) {
         }
         fetchData();
     }, [props.apiRoute]);
-    
+
 
     return (
         <Container>
@@ -45,7 +45,7 @@ function ThreadsPage(props) {
                 spacing={1}
                 className={classes.userPage}
             >
-                <ThreadList threads={threads} userID={props.userID}/>
+                <ThreadList threads={threads} />
                 {props.sideCard}
             </Grid>
         </Container>

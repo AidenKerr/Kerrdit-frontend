@@ -86,7 +86,7 @@ function App() {
             <Signup/>
           </Route>
           <Route path='/u/:username'>
-            <User userID={userInfo ? userInfo.userID : null}/>
+            <User/>
           </Route>
           <Route path='/r/:subkerrdit/comments/:id'>
             <Thread />
@@ -95,7 +95,7 @@ function App() {
             <SubmitThread userID={userInfo ? userInfo.userID : null}/>
           </Route>
           <Route path='/r/:subkerrdit'>
-            <Subkerrdit userID={userInfo ? userInfo.userID : null}/>
+            <Subkerrdit/>
           </Route>
           <Route path='/'>
             <Home />

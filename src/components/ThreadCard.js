@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 const humanizeDuration = require("humanize-duration");
 
 
-function ThreadCard({ post_id, thread_id, points, subkerrdit, username, unix_time_ms, subject, initVote, loggedInID }) {
+function ThreadCard({ post_id, thread_id, points, subkerrdit, username, unix_time_ms, subject, initVote }) {
 
     const [vote, setVote] = useState(initVote);
     const [score, setScore] = useState(points);
+    const [userInfo, setUserInfo] = useState();
     const useStyles = makeStyles({
         postCard: {
             display: 'flex',
@@ -31,9 +32,18 @@ function ThreadCard({ post_id, thread_id, points, subkerrdit, username, unix_tim
         setVote(initVote);
     }, [initVote]);
 
-    const sendVote = (post_id, user_id, value) => {
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('username');
+        const loggedInUserID = localStorage.getItem('userID');
+        if (loggedInUser) {
+            setUserInfo({
+                username: loggedInUser,
+                userID: loggedInUserID
+            });
+        }
+    }, []);
 
-        console.log("vote " + vote);
+    const sendVote = (post_id, user_id, value) => {
 
         if (value === vote)
             value = 0;
@@ -56,9 +66,9 @@ function ThreadCard({ post_id, thread_id, points, subkerrdit, username, unix_tim
         <Card className={classes.postCard}>
 
             <Box className={classes.votingBox}>
-                <IconButton onClick={() => sendVote(post_id, loggedInID, 1)}><ArrowUpward color={upvoteColor} /></IconButton>
+                <IconButton onClick={() => sendVote(post_id, userInfo.userID, 1)}><ArrowUpward color={upvoteColor} /></IconButton>
                 <Typography className={classes.score}>{score}</Typography>
-                <IconButton onClick={() => sendVote(post_id, loggedInID, -1)}><ArrowDownward color={downvoteColor} /></IconButton>
+                <IconButton onClick={() => sendVote(post_id, userInfo.userID, -1)}><ArrowDownward color={downvoteColor} /></IconButton>
             </Box>
 
             <CardActionArea component={Link} to={`/r/${subkerrdit}/comments/${thread_id}`}>

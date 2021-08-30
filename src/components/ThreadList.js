@@ -8,24 +8,35 @@ function ThreadList(props) {
     const threads = props.threads;
 
     const [votes, setVotes] = useState({});
+    const [userInfo, setUserInfo] = useState();
     const useStyles = makeStyles({
         threadList: {
             flexGrow: 1
         },
     });
     const classes = useStyles();
-    
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('username');
+        const loggedInUserID = localStorage.getItem('userID');
+        if (loggedInUser) {
+            setUserInfo({
+                username: loggedInUser,
+                userID: loggedInUserID
+            });
+        }
+    }, []);
 
     useEffect(() => {
         const IDs = threads.map((thread) => {
             return thread.post_id;
         });
-        
+
         const fetchData = async () => {
             const result = await axios.get('http://localhost:3001/api/userVotes', {
                 params: {
                     IDs: IDs,
-                    user_id: props.userID
+                    user_id: userInfo ? userInfo.userID : null
                 }
             });
 
@@ -36,7 +47,7 @@ function ThreadList(props) {
             setVotes(newVotes);
         }
         fetchData();
-    }, [threads, props.userID]);
+    }, [threads, userInfo]);
 
     const threadBoxes = threads.map((thread) => {
         return <ThreadCard
@@ -48,8 +59,7 @@ function ThreadList(props) {
             username={thread.username}
             unix_time_ms={thread.unix_time_ms}
             subject={thread.subject}
-            initVote={votes[thread.post_id] ? votes[thread.post_id] : 0 }
-            loggedInID={props.userID}
+            initVote={votes[thread.post_id] ? votes[thread.post_id] : 0}
         />
     })
 
